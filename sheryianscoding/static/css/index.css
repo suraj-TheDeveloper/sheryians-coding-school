@@ -1,0 +1,14 @@
+.landing {
+    display: block;
+    text-align: center;
+    margin-top: 120px;
+    color: var(--secondary-color);
+    height: 50vh;
+    align-items: center;
+    line-height: 1.8;
+}
+
+.landing-content {
+    padding-left: 10%;
+    padding-right: 10%;
+}

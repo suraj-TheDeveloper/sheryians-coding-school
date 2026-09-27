@@ -1,0 +1,116 @@
+/* Form container */
+.form-container {
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-container h2 {
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+    color: #1a1a1a;
+}
+
+/* Field wrapper */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Inputs, selects, textareas */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="url"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #fafafa;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    background-color: #fff;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Checkbox / radio */
+input[type="checkbox"],
+input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #4f46e5;
+}
+
+/* Errors (Django renders these as <ul class="errorlist">) */
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    color: #dc2626;
+    font-size: 0.85rem;
+}
+
+/* Help text */
+.helptext {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* Submit button */
+.form-container button[type="submit"],
+.form-container input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    background-color: #4f46e5;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.form-container button[type="submit"]:hover,
+.form-container input[type="submit"]:hover {
+    background-color: #4338ca;
+}
+
+/* Non-field errors */
+.non-field-errors {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}

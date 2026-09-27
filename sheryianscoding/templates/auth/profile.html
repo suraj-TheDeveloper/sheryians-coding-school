@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <div class="profile-avatar">
+                {{ student.first_name|slice:":1" }}{{ student.last_name|slice:":1" }}
+            </div>
+            <h2 class="profile-name">{{ student.first_name }} {{ student.last_name }}</h2>
+            <p class="profile-subtitle">Student</p>
+
+            <div class="profile-details">
+                <div class="detail-row">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value">{{ student.email }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Phone</span>
+                    <span class="detail-value">{{ student.phone }}</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <a href="#" class="btn btn-edit">Edit Profile</a>
+                <a href="{% url 'logout' %}" class="btn btn-logout">Logout</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

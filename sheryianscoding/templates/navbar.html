@@ -1,0 +1,27 @@
+<nav class="navbar">
+    <div class="nav-logo">
+        <img src="{{MEDIA_URL}}logo/full-logo.webp" width="200" height="50">
+    </div>
+    <ul class="nav-links">
+        <li><a href="{% url 'index' %}" class="active">Home</a></li>
+        <li><a href="{% url 'courses' %}">Courses</a></li>
+        <!-- <li><a href="#">Bootcamp</a></li>
+        <li><a href="#">Classroom</a></li>
+        <li><a href="#">Offline Programs</a></li> -->
+        
+        <!-- Dropdown Item Container -->
+        {% if logged_in_student %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-trigger">
+                    Hi, {{ logged_in_student.first_name }} <span class="arrow">&#9662;</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Sign in</a></li>
+        {% endif %}
+    </ul>
+</nav>

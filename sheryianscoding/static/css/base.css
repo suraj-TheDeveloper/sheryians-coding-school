@@ -1,0 +1,123 @@
+:root {
+    --primary-color: #1D4ED8;
+    --secondary-color: #F97316;
+    --background-color: #F9FAFB;
+    --text-color: #111827;
+}
+
+/* Reset basic styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-color);
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo styling */
+.nav-logo a {
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Main Navigation Links List */
+.nav-links {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links li {
+  margin-left: 1.5rem;
+  position: relative; /* CRITICAL: Anchors the absolute positioned dropdown */
+}
+
+/* Styling for primary links */
+.nav-links a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect on primary links */
+.nav-links a:hover {
+  color: var(--secondary-color);
+  background-color: var(--background-color);
+}
+
+/* Tiny styling adjustments for dropdown trigger text arrow */
+.arrow {
+  font-size: 0.8rem;
+  margin-left: 4px;
+}
+
+/* --- DROPDOWN SPECIFIC STYLES --- */
+
+/* Hidden by default, absolute positioning places it directly under parent menu item */
+.dropdown-menu {
+  display: none; 
+  position: absolute;
+  top: 100%; /* Positions the dropdown perfectly below the nav bar item */
+  left: 0;
+  background-color: var(--primary-color);
+  min-width: 180px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  padding: 0.5rem 0;
+  list-style: none;
+  z-index: 1001;
+}
+
+/* Dropdown list spacing adjustments */
+.dropdown-menu li {
+  margin: 0; /* Overrides global link spacing to stack vertically instead */
+  width: 100%;
+}
+
+/* Inside dropdown links - styled distinctively from dark theme navbar text */
+.dropdown-menu a {
+  color: var(--secondary-color);
+  padding: 0.6rem 1.2rem;
+  border-radius: 0;
+}
+
+/* Hover style inside dropdown menu */
+.dropdown-menu a:hover {
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+}
+
+/* SHOW DROPDOWN MENU ON HOVER */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: inherit;
+}

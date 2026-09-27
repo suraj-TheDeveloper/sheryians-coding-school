@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="courses-wrapper">
+        <h1 class="courses-heading">Available Courses</h1>
+
+        {% if courses %}
+            <div class="courses-grid">
+                {% for course in courses %}
+                <div class="course-card">
+                    <div class="course-image-placeholder">{{ course.title|slice:":1" }}</div>
+
+                    <div class="course-body">
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <p class="course-description">{{ course.description|truncatewords:20 }}</p>
+
+                        <div class="course-meta">
+                            <span class="course-duration">⏱ {{ course.duration }}</span>
+                            <span class="course-price">₹{{ course.price }}</span>
+                        </div>
+
+                        <a href="#" class="btn-enroll">Enroll Now</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-courses">No courses available right now.</p>
+        {% endif %}
+    </div>
+{% endblock %}
