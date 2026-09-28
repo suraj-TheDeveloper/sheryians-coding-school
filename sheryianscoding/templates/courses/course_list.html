@@ -1,31 +1,90 @@
 {% extends "base.html" %}
-{% load static %}
 {% block content %}
-    <div class="courses-wrapper">
-        <h1 class="courses-heading">Available Courses</h1>
+    {% include 'navbar.html' %}
 
-        {% if courses %}
-            <div class="courses-grid">
-                {% for course in courses %}
-                <div class="course-card">
-                    <div class="course-image-placeholder">{{ course.title|slice:":1" }}</div>
+    <main class="cl-page">
+        <header class="cl-header">
+            <span class="cl-eyebrow">Our Programs</span>
+            <h1 class="cl-title">Available <span>Courses</span></h1>
+            <p class="cl-sub">Choose a course, check the syllabus, and start building your tech career.</p>
+        </header>
 
-                    <div class="course-body">
-                        <h3 class="course-title">{{ course.title }}</h3>
-                        <p class="course-description">{{ course.description|truncatewords:20 }}</p>
+        <div class="cl-grid">
+            {% for course in courses %}
+            {% with modules=course.coursemodules_set.all %}
+            <article class="cl-card" style="--i: {{ forloop.counter0 }}">
 
-                        <div class="course-meta">
-                            <span class="course-duration">⏱ {{ course.duration }}</span>
-                            <span class="course-price">₹{{ course.price }}</span>
+                <div class="cl-media">
+                    {% if course.thumbnail %}
+                        <img src="{{ course.thumbnail.url }}" alt="{{ course.title }}">
+                    {% else %}
+                        <span class="cl-initial">{{ course.title|slice:":1" }}</span>
+                    {% endif %}
+                    <span class="cl-badge">⏱ {{ course.duration }}</span>
+                </div>
+
+                <div class="cl-body">
+                    <h2 class="cl-name">{{ course.title }}</h2>
+
+                    <div class="cl-meta">
+                        <span>📚 {{ modules|length }} module{{ modules|length|pluralize }}</span>
+                        {% if course.start_Date %}
+                            <span>📅 Starts {{ course.start_Date|date:"d M Y" }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="cl-desc-wrap">
+                        <p class="cl-desc">{{ course.description }}</p>
+                        <button type="button" class="cl-more" hidden>Show more</button>
+                    </div>
+
+                    {% if modules %}
+                    <details class="cl-syllabus">
+                        <summary>View syllabus</summary>
+                        <ol>
+                            {% for module in modules %}
+                                <li>
+                                    <strong>{{ module.module_name }}</strong>
+                                    <p>{{ module.description|truncatewords:25 }}</p>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </details>
+                    {% endif %}
+
+                    <div class="cl-footer">
+                        <div class="cl-price">
+                            <small>Course fee</small>
+                            <strong>₹{{ course.price }}</strong>
                         </div>
-
-                        <a href="#" class="btn-enroll">Enroll Now</a>
+                        <a href="#" class="cl-btn">Enroll Now</a>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="no-courses">No courses available right now.</p>
-        {% endif %}
-    </div>
+            </article>
+            {% endwith %}
+            {% empty %}
+                <div class="cl-empty">
+                    <div class="cl-empty-icon">📚</div>
+                    <h3>No courses available right now</h3>
+                    <p>New courses are on the way. Please check back soon.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+<script>
+    document.querySelectorAll('.cl-desc-wrap').forEach(function (wrap) {
+        var text = wrap.querySelector('.cl-desc');
+        var btn = wrap.querySelector('.cl-more');
+
+        // Only show the button if the text is actually cut off
+        if (text.scrollHeight > text.clientHeight + 1) {
+            btn.hidden = false;
+        }
+
+        btn.addEventListener('click', function () {
+            var expanded = text.classList.toggle('expanded');
+            btn.textContent = expanded ? 'Show less' : 'Show more';
+        });
+    });
+</script>
 {% endblock %}

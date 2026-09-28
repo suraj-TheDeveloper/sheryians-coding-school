@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import *
 from .models import *
@@ -10,7 +10,15 @@ def Login(request):
         student = Students.objects.filter(phone=phone).first()
         if student is not None:
             request.session['student_id'] = student.id
-            return redirect("index")
+            payload = {
+                "student_id": student.id,
+                "first_name": student.first_name,
+                "last_name": student.last_name,
+                "email": student.email 
+            }
+            response = redirect("index")
+            response.set_cookie('student_details', payload, max_age=24*60*60)
+            return response
         else:
             messages.error(request, 'invalid phone no')
             return redirect("login")
@@ -21,8 +29,9 @@ def Login(request):
 
 def Logout(request):
     request.session.flush()
-    return redirect("login")
-
+    response = redirect("index")
+    response.delete_cookie('student_details')
+    return response
 
 def Register(request):
     if request.method == 'POST':
@@ -43,5 +52,20 @@ def Register(request):
 @student_login_required
 def Profile(request):
     student_id = request.session.get('student_id')
-    student = Students.objects.filter(id=student_id).first()
-    return render(request, "auth/profile.html", {'student': student})
+    if not student_id:
+        return render("login")
+    student_profile = get_object_or_404(Students, id=student_id)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=student_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "your profile has been updated")
+            return redirect("profile")
+    else:
+        form = ProfileForm(instance=student_profile)
+    print("form", form)
+    return render(request, "auth/profile.html", {
+        'student': student_profile,
+        'form': form,
+        'courses': student_profile.course_id.all()
+    })

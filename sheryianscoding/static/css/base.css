@@ -1,8 +1,11 @@
 :root {
-    --primary-color: #1D4ED8;
-    --secondary-color: #F97316;
-    --background-color: #F9FAFB;
-    --text-color: #111827;
+  --primary-color: #1D4ED8;
+  --primary-dark: #1E3A8A;
+  --secondary-color: #F97316;
+  --secondary-dark: #EA580C;
+  --highlight-color: #FDBA74;
+  --background-color: #F9FAFB;
+  --text-color: #111827;
 }
 
 /* Reset basic styles */
@@ -17,104 +20,250 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Navbar container */
+/* ---------- Navbar container ---------- */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--primary-color);
-  padding: 1rem 2rem;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 5%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(29, 78, 216, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Logo styling */
-.nav-logo a {
-  color: var(--secondary-color);
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-decoration: none;
+.nav-logo {
+    display: flex;
+    align-items: center;
 }
 
-/* Main Navigation Links List */
+.nav-logo img {
+    display: block;
+}
+
+/* ---------- Links ---------- */
 .nav-links {
-  display: flex;
-  list-style: none;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links li {
-  margin-left: 1.5rem;
-  position: relative; /* CRITICAL: Anchors the absolute positioned dropdown */
+    position: relative;
 }
 
-/* Styling for primary links */
 .nav-links a {
-  color: var(--secondary-color);
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 0.5rem 0.75rem;
-  border-radius: 4px;
-  display: block;
-  transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.55rem 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.25s ease, color 0.25s ease;
 }
 
-/* Hover effect on primary links */
 .nav-links a:hover {
-  color: var(--secondary-color);
-  background-color: var(--background-color);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
 }
 
-/* Tiny styling adjustments for dropdown trigger text arrow */
+/* Active page: orange underline dot */
+.nav-links a.active {
+    color: #fff;
+    position: relative;
+}
+
+.nav-links a.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    width: 20px;
+    height: 3px;
+    transform: translateX(-50%);
+    background: var(--secondary-color);
+    border-radius: 3px;
+}
+
+/* ---------- Sign in button ---------- */
+.nav-links a.btn-nav {
+    background: var(--secondary-color);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.55rem 1.4rem;
+    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
+}
+
+.nav-links a.btn-nav:hover {
+    background: var(--secondary-dark);
+    transform: translateY(-1px);
+}
+
+/* ---------- User dropdown ---------- */
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
 .arrow {
-  font-size: 0.8rem;
-  margin-left: 4px;
+    font-size: 0.75rem;
+    transition: transform 0.25s ease;
 }
 
-/* --- DROPDOWN SPECIFIC STYLES --- */
+.dropdown:hover .arrow,
+.dropdown:focus-within .arrow {
+    transform: rotate(180deg);
+}
 
-/* Hidden by default, absolute positioning places it directly under parent menu item */
 .dropdown-menu {
-  display: none; 
-  position: absolute;
-  top: 100%; /* Positions the dropdown perfectly below the nav bar item */
-  left: 0;
-  background-color: var(--primary-color);
-  min-width: 180px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  padding: 0.5rem 0;
-  list-style: none;
-  z-index: 1001;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 190px;
+    padding: 0.5rem;
+    margin: 0;
+    list-style: none;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
 }
 
-/* Dropdown list spacing adjustments */
+/* Invisible bridge so the menu doesn't close when the mouse crosses the gap */
+.dropdown-menu::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 0;
+    width: 100%;
+    height: 12px;
+}
+
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
 .dropdown-menu li {
-  margin: 0; /* Overrides global link spacing to stack vertically instead */
-  width: 100%;
+    margin: 0;
 }
 
-/* Inside dropdown links - styled distinctively from dark theme navbar text */
 .dropdown-menu a {
-  color: var(--secondary-color);
-  padding: 0.6rem 1.2rem;
-  border-radius: 0;
+    color: var(--text-color);
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
 }
 
-/* Hover style inside dropdown menu */
 .dropdown-menu a:hover {
-  color: var(--secondary-color);
-  background-color: var(--primary-color);
+    background: #EFF6FF;
+    color: var(--primary-color);
 }
 
-/* SHOW DROPDOWN MENU ON HOVER */
-.dropdown:hover .dropdown-menu {
-  display: block;
+/* ---------- Mobile toggle (hidden on desktop) ---------- */
+.nav-toggle {
+    display: none;
+}
+
+.nav-burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.nav-burger span {
+    width: 26px;
+    height: 3px;
+    background: #fff;
+    border-radius: 3px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .nav-burger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 0.5rem 5% 1rem;
+        background: var(--primary-dark);
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-toggle:checked ~ .nav-links {
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    .nav-links a.active::after {
+        left: 1rem;
+        transform: none;
+    }
+
+    .nav-links a.btn-nav {
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+
+    /* Dropdown becomes an inline list on mobile */
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: none;
+        margin-top: 0.25rem;
+    }
+
+    .dropdown-menu::before {
+        display: none;
+    }
+
+    .dropdown-menu a {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .dropdown-menu a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+    }
 }
 
 h1 {

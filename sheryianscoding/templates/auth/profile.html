@@ -1,28 +1,107 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
-    <div class="profile-wrapper">
-        <div class="profile-card">
-            <div class="profile-avatar">
-                {{ student.first_name|slice:":1" }}{{ student.last_name|slice:":1" }}
-            </div>
-            <h2 class="profile-name">{{ student.first_name }} {{ student.last_name }}</h2>
-            <p class="profile-subtitle">Student</p>
+    {% include 'navbar.html' %}
 
-            <div class="profile-details">
-                <div class="detail-row">
-                    <span class="detail-label">Email</span>
-                    <span class="detail-value">{{ student.email }}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Phone</span>
-                    <span class="detail-value">{{ student.phone }}</span>
-                </div>
-            </div>
-
-            <div class="profile-actions">
-                <a href="#" class="btn btn-edit">Edit Profile</a>
-                <a href="{% url 'logout' %}" class="btn btn-logout">Logout</a>
+    <!-- Hero -->
+    <section class="pf-hero">
+        <div class="pf-hero-inner">
+            <div class="pf-avatar">{{ student.first_name|slice:":1"|upper }}</div>
+            <div>
+                <h1 class="pf-name">{{ student.first_name }} {{ student.last_name }}</h1>
+                <p class="pf-email">{{ student.email }}</p>
+                {% if student.city or student.state or student.country %}
+                    <span class="pf-loc">📍 {{ student.city }}{% if student.city and student.state %}, {% endif %}{{ student.state }}{% if student.country %}{% if student.city or student.state %}, {% endif %}{{ student.country }}{% endif %}</span>
+                {% endif %}
             </div>
         </div>
+    </section>
+
+    <div class="pf-layout">
+        <!-- Details card (editable) -->
+        <section class="pf-card">
+            <div class="pf-card-head">
+                <h2>Personal details</h2>
+                <button type="button" id="edit-btn" class="pf-btn pf-btn-outline">✎ Edit Profile</button>
+            </div>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <form method="post" id="profile-form" class="pf-form">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <fieldset id="profile-fields" class="pf-fields" disabled>
+                    {% for field in form %}
+                        <div class="pf-field {% if field.name == 'bio' %}pf-full{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+
+                <div class="pf-actions" id="form-actions" hidden>
+                    <button type="submit" class="pf-btn pf-btn-primary">Save Changes</button>
+                    <button type="button" id="cancel-btn" class="pf-btn pf-btn-ghost">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Enrolled courses -->
+        <aside class="pf-card pf-side">
+            <div class="pf-card-head">
+                <h2>My courses</h2>
+                <span class="pf-count">{{ courses|length }}</span>
+            </div>
+
+            {% if courses %}
+                <ul class="pf-courses">
+                    {% for course in courses %}
+                        <li>
+                            <span class="pf-course-icon">{{ course.title|slice:":1"|upper }}</span>
+                            <div>
+                                <strong>{{ course.title }}</strong>
+                                <small>⏱ {{ course.duration }}</small>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="pf-empty">You haven't enrolled in any course yet.</p>
+                <a href="{% url 'courses' %}" class="pf-btn pf-btn-primary pf-block">Browse Courses</a>
+            {% endif %}
+        </aside>
     </div>
+
+<script>
+    (function () {
+        var form = document.getElementById('profile-form');
+        var fields = document.getElementById('profile-fields');
+        var editBtn = document.getElementById('edit-btn');
+        var actions = document.getElementById('form-actions');
+
+        function setEditing(on) {
+            fields.disabled = !on;
+            form.classList.toggle('editing', on);
+            editBtn.hidden = on;
+            actions.hidden = !on;
+        }
+
+        editBtn.addEventListener('click', function () { setEditing(true); });
+
+        // Reload the page to discard changes
+        document.getElementById('cancel-btn').addEventListener('click', function () {
+            window.location.href = "{% url 'profile' %}";
+        });
+
+        // If the server returned validation errors, reopen in edit mode
+        setEditing({% if form.errors %}true{% else %}false{% endif %});
+    })();
+    </script>
 {% endblock %}

@@ -1,29 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="form-container">
-        <h2>Course Login</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            {% for field in form %}
-                <div class="form-group">
-                    {{ field.label_tag }}
-                    {{ field }}
-                    {{ field.errors }}
-                    {% if field.help_text %}
-                        <small class="helptext">{{ field.help_text }}</small>
-                    {% endif %}
-                </div>
-            {% endfor %}
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <p>No Account ? <a href="{% url 'register' %}">Register</a></p>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+    {% include 'navbar.html' %}
+    <section class="auth-page">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Welcome back</h2>
+                <p>Log in to continue your learning journey.</p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {{ form.non_field_errors }}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.errors }}
+                        {% if field.help_text %}
+                            <small class="helptext">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit">Log In</button>
+
+                <p class="form-footer">
+                    Don't have an account?
+                    <a href="{% url 'register' %}">Register</a>
+                </p>
+            </form>
+        </div>
+    </section>
 {% endblock %}

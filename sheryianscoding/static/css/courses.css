@@ -1,110 +1,332 @@
-.courses-wrapper {
-    max-width: 1200px;
+/* =========================================
+   COURSE LIST PAGE
+   ========================================= */
+
+/* ---------- Page ---------- */
+.cl-page {
+    max-width: 1150px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 120px 20px 80px; /* 120px clears the fixed navbar */
 }
 
-.courses-heading {
+/* ---------- Header ---------- */
+.cl-header {
+    max-width: 640px;
+    margin: 0 auto 50px;
     text-align: center;
-    font-size: 28px;
+}
+
+.cl-eyebrow {
+    display: inline-block;
+    padding: 6px 16px;
+    margin-bottom: 16px;
+    font-size: 0.78rem;
     font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 32px;
-}
-
-.courses-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-}
-
-.course-card {
-    background: #fff;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.course-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
-}
-
-.course-image-placeholder {
-    width: 100%;
-    height: 140px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
-    font-size: 40px;
-    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
+    color: var(--primary-color);
+    background: #eff6ff;
+    border-radius: 999px;
 }
 
-.course-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+.cl-title {
+    margin: 0 0 14px;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    font-weight: 800;
+    color: var(--text-color);
 }
 
-.course-title {
-    margin: 0 0 12px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #111827;
+.cl-title span {
+    position: relative;
+    color: var(--primary-color);
 }
 
-.course-description {
-    font-size: 14px;
-    color: #4b5563;
-    line-height: 1.5;
-    flex: 1;
+.cl-title span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 4px;
+    background: var(--secondary-color);
+    border-radius: 4px;
 }
 
-.course-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 16px 0;
-    font-size: 14px;
-}
-
-.course-duration {
+.cl-sub {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.7;
     color: #6b7280;
 }
 
-.course-price {
-    font-weight: 700;
-    color: #111827;
-    font-size: 16px;
+/* ---------- Grid (cards stretch to equal height) ---------- */
+.cl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 28px;
 }
 
-.btn-enroll {
+/* ---------- Card ---------- */
+.cl-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(17, 24, 39, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    animation: clFadeUp 0.6s ease both;
+    animation-delay: calc(var(--i) * 0.1s);
+}
+
+.cl-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(29, 78, 216, 0.3);
+    box-shadow: 0 18px 40px rgba(29, 78, 216, 0.14);
+}
+
+/* ---------- Media ---------- */
+.cl-media {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 190px;
+    background:
+        radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.35), transparent 45%),
+        linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+}
+
+.cl-media img {
     display: block;
-    text-align: center;
-    padding: 10px 0;
-    background: #4f46e5;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cl-initial {
+    font-size: 3.6rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.95);
+    text-transform: uppercase;
+}
+
+.cl-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(17, 24, 39, 0.55);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* ---------- Body ---------- */
+.cl-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* fills the card so the footer sits at the bottom */
+    padding: 24px;
+}
+
+.cl-name {
+    margin: 0 0 10px;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-color);
+}
+
+.cl-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+/* ---------- Description with Show more ---------- */
+.cl-desc-wrap {
+    margin-bottom: 18px;
+}
+
+.cl-desc {
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.7;
+    color: #4b5563;
+
+    /* clamp to 3 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cl-desc.expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}
+
+.cl-more {
+    margin-top: 6px;
+    padding: 0;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.cl-more:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Syllabus toggle ---------- */
+.cl-syllabus {
+    margin-bottom: 20px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.cl-syllabus summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    cursor: pointer;
+    list-style: none;
+}
+
+.cl-syllabus summary::-webkit-details-marker {
+    display: none;
+}
+
+.cl-syllabus summary::after {
+    content: "＋";
+    font-size: 1.1rem;
+}
+
+.cl-syllabus[open] summary::after {
+    content: "－";
+}
+
+.cl-syllabus ol {
+    max-height: 220px; /* long syllabi scroll inside the card */
+    overflow-y: auto;
+    margin: 0;
+    padding: 4px 16px 16px 36px;
+}
+
+.cl-syllabus li {
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.cl-syllabus li p {
+    margin: 2px 0 0;
+    font-size: 0.83rem;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
+/* ---------- Footer: price + button (always at the bottom) ---------- */
+.cl-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.cl-price small {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9ca3af;
+}
+
+.cl-price strong {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+}
+
+.cl-btn {
+    padding: 11px 24px;
+    font-size: 0.92rem;
+    font-weight: 700;
     color: #fff;
     text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: background 0.2s ease;
+    background: var(--secondary-color);
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.3);
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.btn-enroll:hover {
-    background: #4338ca;
+.cl-btn:hover {
+    background: var(--secondary-dark);
+    transform: translateY(-2px);
 }
 
-.no-courses {
+/* ---------- Empty state ---------- */
+.cl-empty {
+    grid-column: 1 / -1;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 50px 30px;
     text-align: center;
-    color: #9ca3af;
-    font-size: 15px;
-    padding: 60px 0;
+    background: #fff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 16px;
+}
+
+.cl-empty-icon {
+    margin-bottom: 10px;
+    font-size: 2.6rem;
+}
+
+.cl-empty h3 {
+    margin: 0 0 6px;
+    color: var(--text-color);
+}
+
+.cl-empty p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: #6b7280;
+}
+
+/* ---------- Animation ---------- */
+@keyframes clFadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 480px) {
+    .cl-page {
+        padding-top: 100px;
+    }
+
+    .cl-grid {
+        grid-template-columns: 1fr;
+    }
 }

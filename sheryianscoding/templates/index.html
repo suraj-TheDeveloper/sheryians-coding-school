@@ -3,10 +3,33 @@
     {% include 'navbar.html' %}
     <section class="landing">
         <div class="landing-content">
-            <p>LEARN BUILD GET PLACED</p>
-            <h1>Become a software engineer
-            that companies wants to hire</h1>
-            <p>Join a growing community if students preparing for real world tech-careers at Sheryians.</p>
+            <span class="landing-eyebrow">Learn · Build · Get Placed</span>
+
+            <h1>
+                Become a software engineer that
+                <span class="highlight">companies want to hire</span>
+            </h1>
+
+            <p class="landing-sub">
+                Join a growing community of students preparing for
+                real-world tech careers at Sheryians.
+            </p>
+
+            {% if logged_in_student %}
+                <div class="landing-actions">
+                    <a href="{% url 'courses' %}" class="btn btn-primary">View Course</a>
+                </div>
+            {% else %}
+                <div class="landing-actions">
+                    <a href="{% url 'courses' %}" class="btn btn-primary">View Course</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline">Register</a>
+                </div>
+            {% endif %}
+            <div class="landing-stats">
+                <div class="stat"><strong>500+</strong><span>Students Placed</span></div>
+                <div class="stat"><strong>50+</strong><span>Hiring Partners</span></div>
+                <div class="stat"><strong>4.8★</strong><span>Student Rating</span></div>
+            </div>
         </div>
     </section>
 {% endblock %}
