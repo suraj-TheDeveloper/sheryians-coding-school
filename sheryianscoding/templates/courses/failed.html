@@ -1,0 +1,12 @@
+<!-- failed.html -->
+{% extends "base.html" %}
+{% block content %}
+<section class="result-section">
+  <div class="result-card failed">
+    <div class="result-icon">❌</div>
+    <h2>Payment Failed</h2>
+    <p class="result-sub">Something went wrong while processing your payment.</p>
+    <a href="{% url 'courses' %}" class="btn-enroll">Retry Payment</a>
+  </div>
+</section>
+{% endblock %}

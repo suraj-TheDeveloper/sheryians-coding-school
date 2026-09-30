@@ -1,0 +1,19 @@
+<!-- success.html -->
+{% extends "base.html" %}
+{% block content %}
+<section class="result-section">
+  <div class="result-card success">
+    <div class="result-icon">✅</div>
+    <h2>Payment Successful</h2>
+    <p class="result-sub">You're now enrolled in <strong>{{ payment.course.title }}</strong></p>
+
+    <div class="result-details">
+      <div><span>Transaction ID</span><span>{{ payment.transactionid }}</span></div>
+      <div><span>Amount Paid</span><span>₹{{ payment.amount }}</span></div>
+      <div><span>Card</span><span>{{ payment.card_type|upper }} •••• {{ payment.card_last4 }}</span></div>
+    </div>
+
+    <a href="{% url 'courses' %}" class="btn-enroll">Go to Course</a>
+  </div>
+</section>
+{% endblock %}

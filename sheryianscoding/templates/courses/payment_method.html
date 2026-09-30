@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="payment-section">
+  <div class="payment-wrapper">
+
+    <!-- Order Summary -->
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <div class="summary-course">
+        {% if course.thumbnail %}
+          <img src="{{ course.thumbnail.url }}" alt="{{ course.title }}">
+        {% else %}
+          <div class="thumb-placeholder">📘</div>
+        {% endif %}
+        <div>
+          <h4>{{ course.title }}</h4>
+          <p>{{ course.duration }}</p>
+        </div>
+      </div>
+
+      <div class="summary-row total">
+        <span>Total Amount</span>
+        <span>₹{{ course.price }}</span>
+      </div>
+
+      <div class="secure-badge">🔒 Secure simulated checkout</div>
+    </div>
+
+    <!-- Payment Form -->
+    <div class="payment-form-box">
+      <h3>Pay with Card</h3>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="post" action="{% url 'payments' course.id %}" id="paymentForm">
+        {% csrf_token %}
+
+        <label>Name on Card</label>
+        <input type="text" name="card_holder_name" placeholder="Suraj Kumar" required>
+
+        <label>Card Number</label>
+        <div class="card-input">
+          <input type="text" name="card_number" id="cardNumber"
+                 placeholder="1234 5678 9012 3456" maxlength="19" required>
+          <span class="card-icon" id="cardIcon">💳</span>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Expiry</label>
+            <input type="text" name="expiry" placeholder="MM/YY" maxlength="5" required>
+          </div>
+          <div>
+            <label>CVV</label>
+            <input type="password" name="cvv" placeholder="123" maxlength="4" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-pay" id="payBtn">
+          Pay ₹{{ course.price }}
+        </button>
+
+        <p class="disclaimer">This is a simulated payment for a practice project. No real transaction occurs.</p>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const cardInput = document.getElementById("cardNumber");
+  const cardIcon = document.getElementById("cardIcon");
+
+  cardInput.addEventListener("input", () => {
+    let value = cardInput.value.replace(/\D/g, "").slice(0, 16);
+    cardInput.value = value.replace(/(.{4})/g, "$1 ").trim();
+
+    if (value.startsWith("4")) cardIcon.textContent = "💳 Visa";
+    else if (["51","52","53","54","55"].includes(value.slice(0,2))) cardIcon.textContent = "💳 MC";
+    else if (value.startsWith("6")) cardIcon.textContent = "💳 RuPay";
+    else cardIcon.textContent = "💳";
+  });
+
+  document.getElementById("paymentForm").addEventListener("submit", function () {
+    const btn = document.getElementById("payBtn");
+    btn.disabled = true;
+    btn.textContent = "Processing...";
+  });
+</script>
+{% endblock %}

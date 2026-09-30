@@ -57,7 +57,7 @@
                             <small>Course fee</small>
                             <strong>₹{{ course.price }}</strong>
                         </div>
-                        <a href="#" class="cl-btn">Enroll Now</a>
+                        <a href="{% url 'enroll' course.id %}" class="cl-btn">Enroll Now</a>
                     </div>
                 </div>
             </article>
