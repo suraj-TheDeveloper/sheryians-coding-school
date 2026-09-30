@@ -53,6 +53,7 @@ class Payments(models.Model):
     card_holder_name = models.CharField(max_length=100)
     card_last4 = models.CharField(max_length=20)
     card_type = models.CharField(max_length=50, choices=CARD_CHOICES, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     class Meta:
         db_table = "payments"

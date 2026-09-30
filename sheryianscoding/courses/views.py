@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Courses, Enrollment, Payments
 from authentication.models import Students
+from django.db.models import Sum
+from authentication.decorators import student_login_required
 from django.contrib import messages
 import random
 import string
@@ -8,8 +10,15 @@ import string
 # Create your views here.
 def CourseList(request):
     courses = Courses.objects.all()
-    return render(request, "courses/course_list.html", {'courses': courses})
+    enroll_ids = set()
+    if 'student_id' in request.session:
+        student_id = request.session['student_id']
+        if student_id:
+            enroll_ids = set(Enrollment.objects.filter(student = student_id).values_list("course", flat=True))
+    print("enroll_ids", enroll_ids)
+    return render(request, "courses/course_list.html", {'courses': courses, "enrollids": enroll_ids})
 
+@student_login_required
 def payment_page(request, id):
     course = Courses.objects.get(id=id)
     student_id = request.session['student_id']
@@ -19,6 +28,7 @@ def payment_page(request, id):
         return redirect("courses")
     return render(request, "courses/payment_method.html", {"course": course})
 
+@student_login_required
 def PaymentMethod(request, id):
     course = Courses.objects.get(id=id)
     student_id = request.session['student_id']
@@ -48,9 +58,21 @@ def PaymentMethod(request, id):
         else:
             return redirect('failure')
 
+@student_login_required
 def success(request, id):
     payment_data = Payments.objects.get(id=id)
     return render(request, "courses/success.html", {"payment": payment_data})
 
+@student_login_required
 def failure(request):
     return render(request, "courses/failed.html")
+
+@student_login_required
+def payment_history(request):
+    student_id = request.session['student_id']
+    if student_id:
+        payment_details = Payments.objects.filter(student_id=get_object_or_404(Students, id=student_id)).prefetch_related('course').order_by("-created_at")
+        total_amount = payment_details.aggregate(total=Sum("amount"))
+        print("total_amount", total_amount)
+    return render(request, "courses/payments_history.html", { "payments": payment_details,
+        "total_paid": total_amount, })

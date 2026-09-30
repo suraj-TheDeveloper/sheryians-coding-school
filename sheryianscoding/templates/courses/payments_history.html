@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+  {% include 'navbar.html' %}
+  <section class="payment-history">
+    <h2>Payment History</h2>
+
+    <div class="summary-card">
+      <span>Total paid</span>
+      <strong>₹{{ total_paid.total }}</strong>
+    </div>
+
+    {% if payments %}
+    <div class="table-wrapper">
+      <table class="payment-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Transaction ID</th>
+            <th>Card</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in payments %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ p.course.title }}</td>
+            <td>{{ p.transactionid }}</td>
+            <td>
+              {% if p.card_type %}{{ p.get_card_type_display }}{% else %}Card{% endif %}
+              •••• {{ p.card_last4 }}
+            </td>
+            <td>₹{{ p.amount }}</td>
+            <td><span class="status status-{{ p.status }}">{{ p.get_status_display }}</span></td>
+            <td>{{ p.created_at|date:"d M Y, h:i A" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p class="empty">No payments yet. <a href="{% url 'course_list' %}">Browse courses</a></p>
+    {% endif %}
+  </section>
+{% endblock %}

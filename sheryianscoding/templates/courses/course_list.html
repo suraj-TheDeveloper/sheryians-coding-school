@@ -57,7 +57,11 @@
                             <small>Course fee</small>
                             <strong>₹{{ course.price }}</strong>
                         </div>
-                        <a href="{% url 'enroll' course.id %}" class="cl-btn">Enroll Now</a>
+                        {% if course.id in enrollids %}
+                            <button class="btn btn-enrolled" disabled>Enrolled ✓</button>
+                        {% else %}
+                            <a href="{% url 'enroll' course.id %}" class="cl-btn">Enroll Now</a>
+                        {% endif %}
                     </div>
                 </div>
             </article>

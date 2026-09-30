@@ -330,3 +330,14 @@
         grid-template-columns: 1fr;
     }
 }
+
+.btn-enrolled,
+.btn-enrolled:hover,
+.btn-enrolled:disabled {
+  background-color: #16a34a;   /* green, change to match your palette */
+  color: #fff;
+  border: none;
+  cursor: not-allowed;
+  opacity: 0.85;
+  pointer-events: none;        /* no hover or click effects */
+}

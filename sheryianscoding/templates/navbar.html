@@ -9,10 +9,11 @@
     </label>
 
     <ul class="nav-links">
-        <li><a href="{% url 'index' %}" class="active">Home</a></li>
-        <li><a href="{% url 'courses' %}">Courses</a></li>
+        <li><a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a></li>
+        <li><a href="{% url 'courses' %}" class="{% if request.resolver_match.url_name == 'courses' %}active{% endif %}">Courses</a></li>
 
         {% if logged_in_student %}
+            <li><a href="{% url 'payment_history' %}" class="{% if request.resolver_match.url_name == 'payment_history' %}active{% endif %}">Payments</a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-trigger">
                     <span class="avatar">{{ logged_in_student.first_name|slice:":1"|upper }}</span>
