@@ -28,7 +28,7 @@ def Login(request):
 
 
 def Logout(request):
-    request.session.flush()
+    del request.session['student_id']
     response = redirect("index")
     response.delete_cookie('student_details')
     return response
@@ -55,6 +55,7 @@ def Profile(request):
     if not student_id:
         return render("login")
     student_profile = get_object_or_404(Students, id=student_id)
+    courses = Courses.objects.filter(enrollment__student=student_profile)
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=student_profile)
         if form.is_valid():
@@ -63,9 +64,8 @@ def Profile(request):
             return redirect("profile")
     else:
         form = ProfileForm(instance=student_profile)
-    print("form", form)
     return render(request, "auth/profile.html", {
         'student': student_profile,
         'form': form,
-        'courses': student_profile.course_id.all()
+        'courses': courses
     })

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Courses, Enrollment, Payments
 from authentication.models import Students
 from django.contrib import messages
@@ -23,11 +23,24 @@ def PaymentMethod(request, id):
     course = Courses.objects.get(id=id)
     student_id = request.session['student_id']
     if request.method == 'POST':
-        Students.objects.filter(id=student_id).update(course_id=id)
-        object, create = Enrollment.objects.get_or_create(course = id, student = student_id)
+        object, create = Enrollment.objects.get_or_create(
+            course = get_object_or_404(Courses, id=id), 
+            student = get_object_or_404(Students, id=student_id)
+        )
         card_holder_name = request.POST['card_holder_name']
-        card_last4 = request.POST['card_last4']
-        payment = Payments.objects.create(card_holder_name=card_holder_name, card_last4=card_last4, enrollid=object.id, status="success", amount=course.amount, student=student_id, course=id, card_Type="visa", transactionid=''.join(random.choices(string.ascii_uppercase + string.digits, k=6)))
+        card_last4 = request.POST['card_number']
+        print("card_last4", card_last4)
+        payment = Payments.objects.create(
+            card_holder_name=card_holder_name, 
+            card_last4=card_last4, 
+            enrollid=get_object_or_404(Enrollment, id=object.id), 
+            status="success", 
+            amount=course.price, 
+            student=get_object_or_404(Students, id=student_id), 
+            course=get_object_or_404(Courses, id=id), 
+            card_type="visa", 
+            transactionid=''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        )
         payment.save()
         success = True
         if success == True:
@@ -37,7 +50,7 @@ def PaymentMethod(request, id):
 
 def success(request, id):
     payment_data = Payments.objects.get(id=id)
-    return render("courses/success.html", {"payment": payment_data})
+    return render(request, "courses/success.html", {"payment": payment_data})
 
 def failure(request):
-    return render("courses/failed.html")
+    return render(request, "courses/failed.html")

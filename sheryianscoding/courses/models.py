@@ -9,9 +9,6 @@ class Courses(models.Model):
     thumbnail = models.ImageField(upload_to='courses/', null=True, blank=True)
     start_Date = models.DateField(null=True, blank=True)
 
-    def __str__(self):
-        return self.title
-
     class Meta:
         db_table = "Courses"
 
@@ -54,7 +51,7 @@ class Payments(models.Model):
     amount = models.IntegerField()
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="pending")
     card_holder_name = models.CharField(max_length=100)
-    card_last4 = models.CharField(max_length=4)
+    card_last4 = models.CharField(max_length=20)
     card_type = models.CharField(max_length=50, choices=CARD_CHOICES, blank=True)
 
     class Meta:

@@ -13,7 +13,6 @@ class Students(models.Model):
     city = models.CharField(blank=True, default="")
     state = models.CharField(blank=True, default="")
     country = models.CharField(blank=True, default="")
-    course_id = models.ForeignKey(Courses, on_delete=models.CASCADE, default=0)
 
     class Meta:
         db_table = 'Students'

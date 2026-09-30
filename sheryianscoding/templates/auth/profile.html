@@ -55,11 +55,7 @@
 
         <!-- Enrolled courses -->
         <aside class="pf-card pf-side">
-            <div class="pf-card-head">
-                <h2>My courses</h2>
-                <span class="pf-count">{{ courses|length }}</span>
-            </div>
-
+            <span class="pf-count">{{ courses|length }}</span>
             {% if courses %}
                 <ul class="pf-courses">
                     {% for course in courses %}
